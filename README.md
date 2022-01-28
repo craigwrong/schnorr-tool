@@ -1,5 +1,7 @@
 # Schnorr Tool
 
+A helper command-line tool for Bitcoin's Elliptic-Curve cryptography and Schnorr signatures.
+
 ## Usage in combination with LibBitcoin Explorer (`bx`)
 
 For this example we will be using these [Test vectors](https://github.com/bitcoin/bips/blob/master/bip-0086.mediawiki#Test_vectors).
