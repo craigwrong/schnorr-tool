@@ -65,11 +65,19 @@ Schnorr-specific keys (`schnorr-tool`).
     bx hd-to-ec xprvA449goEeU9okwCzzZaxiy475EQGQzBkc65su82nXEvcwzfSskb2hAt2WymrjyRL6kpbVTGL3cKtp9herYXSjjQ1j4stsXXiRF7kXkCacK3T
     # 41f41d69260df4cf277826a9b65a3717e4eeddbeedf637f212ca096576479361
 
-    swift run schnorr-tool internal-key 41f41d69260df4cf277826a9b65a3717e4eeddbeedf637f212ca096576479361
+    schnorr-tool internal-key 41f41d69260df4cf277826a9b65a3717e4eeddbeedf637f212ca096576479361
     # cc8a4bc64d897bddc5fbc2f670f7a8ba0b386779106cf1223c6fc5d7cd6fc115
 
-    swift run schnorr-tool tweak cc8a4bc64d897bddc5fbc2f670f7a8ba0b386779106cf1223c6fc5d7cd6fc115
+    schnorr-tool tweak cc8a4bc64d897bddc5fbc2f670f7a8ba0b386779106cf1223c6fc5d7cd6fc115
     # 2ca01ed85cf6b6526f73d39a1111cd80333bfdc00ce98992859848a90a6f0258
 
-    swift run schnorr-tool output-key cc8a4bc64d897bddc5fbc2f670f7a8ba0b386779106cf1223c6fc5d7cd6fc115 2ca01ed85cf6b6526f73d39a1111cd80333bfdc00ce98992859848a90a6f0258
+    schnorr-tool output-key cc8a4bc64d897bddc5fbc2f670f7a8ba0b386779106cf1223c6fc5d7cd6fc115 2ca01ed85cf6b6526f73d39a1111cd80333bfdc00ce98992859848a90a6f0258
     # a60869f0dbcf1dc659c9cecbaf8050135ea9e8cdc487053f1dc6880949dc684c
+
+`scriptPubKey` and `Bech32m` address.
+
+    schnorr-tool output-script a60869f0dbcf1dc659c9cecbaf8050135ea9e8cdc487053f1dc6880949dc684c
+    5120a60869f0dbcf1dc659c9cecbaf8050135ea9e8cdc487053f1dc6880949dc684c
+
+    schnorr-tool address a60869f0dbcf1dc659c9cecbaf8050135ea9e8cdc487053f1dc6880949dc684c      
+    bc1p5cyxnuxmeuwuvkwfem96lqzszd02n6xdcjrs20cac6yqjjwudpxqkedrcr
