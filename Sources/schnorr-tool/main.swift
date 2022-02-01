@@ -155,9 +155,10 @@ extension SchnorrTool {
     
     struct Address: ParsableCommand {
         struct Options: ParsableArguments {
+            @Flag(help: "Generate testnet (\"bcrt1…\") addresses.") var testnet = false
             @Argument(
                 help: "The output key in hex format.")
-            var values: [String]
+            var value: String
         }
         
         static var configuration =
@@ -168,10 +169,10 @@ extension SchnorrTool {
         @OptionGroup var options: Options
         
         mutating func run() {
-            guard let programData = try? Data(base16Encoded: options.values[0]) else {
+            guard let programData = try? Data(base16Encoded: options.value) else {
                 return
             }
-            guard let encoded = try? SegwitAddrCoder(bech32m: true).encode(hrp: "bc", version: 1, program: programData) else {
+            guard let encoded = try? SegwitAddrCoder(bech32m: true).encode(hrp: options.testnet ? "bcrt" : "bc", version: 1, program: programData) else {
                 return
             }
             print(encoded)
