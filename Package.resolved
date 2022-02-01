@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "Bech32",
+        "repositoryURL": "https://github.com/craigwrong/bech32m",
+        "state": {
+          "branch": "develop",
+          "revision": "fab2c35397bec92b1cd96c1999af324dc28da98d",
+          "version": null
+        }
+      },
+      {
         "package": "swift-argument-parser",
         "repositoryURL": "https://github.com/apple/swift-argument-parser",
         "state": {

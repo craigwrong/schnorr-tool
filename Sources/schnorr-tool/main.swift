@@ -1,6 +1,7 @@
 import ArgumentParser
 import ECHelper
 import Base16
+import Bech32
 import Crypto
 import Foundation
 
@@ -10,7 +11,7 @@ struct SchnorrTool: ParsableCommand {
         
         version: "1.0.0",
         
-        subcommands: [Hash.self, Tweak.self, InternalKey.self, Tweak.self, OutputKey.self])
+        subcommands: [Hash.self, Tweak.self, InternalKey.self, Tweak.self, OutputKey.self, OutputScript.self, Address.self])
     
 }
 
@@ -87,10 +88,10 @@ extension SchnorrTool {
             let prefixedTagHash = hasher1.finalize().description
             let tagHash = prefixedTagHash.dropFirst("SHA256 digest: ".count)
             var hasher = Crypto.SHA256()
-            print("tagHash: \(tagHash)")
+            //print("tagHash: \(tagHash)")
             hasher.update(data: try! Data(base16Encoded: tagHash + tagHash + options.value))
             let digest = hasher.finalize()
-            let hash = digest.description
+            let hash = digest.description.dropFirst("SHA256 digest: ".count)
             print(hash)
         }
     }
@@ -123,6 +124,57 @@ extension SchnorrTool {
                 tweak = unsafeBytes.bindMemory(to: UInt8.self).baseAddress!
             }
             print(String(cString: computeOutputKey(internalKey, tweak)))
+        }
+    }
+    
+    struct OutputScript: ParsableCommand {
+        struct Options: ParsableArguments {
+            @Argument(
+                help: "The output key in hex format.")
+            var values: [String]
+        }
+        
+        static var configuration =
+        CommandConfiguration(abstract: "Computes an output script.")
+        
+        // The `@OptionGroup` attribute includes the flags, options, and
+        // arguments defined by another `ParsableArguments` type.
+        @OptionGroup var options: Options
+        
+        mutating func run() {
+            guard let outputKeyData = try? Data(base16Encoded: options.values[0]) else {
+                      return
+                  }
+            var prefix = UInt16(0x5120).bigEndian
+            let prefixData = Data(bytes: &prefix, count: MemoryLayout<UInt16>.size)
+            let scriptData = prefixData + outputKeyData
+            print(scriptData.base16EncodedString())
+        }
+    }
+
+    
+    struct Address: ParsableCommand {
+        struct Options: ParsableArguments {
+            @Argument(
+                help: "The output key in hex format.")
+            var values: [String]
+        }
+        
+        static var configuration =
+        CommandConfiguration(abstract: "Computes a Bech32m address.")
+        
+        // The `@OptionGroup` attribute includes the flags, options, and
+        // arguments defined by another `ParsableArguments` type.
+        @OptionGroup var options: Options
+        
+        mutating func run() {
+            guard let programData = try? Data(base16Encoded: options.values[0]) else {
+                return
+            }
+            guard let encoded = try? SegwitAddrCoder(bech32m: true).encode(hrp: "bc", version: 1, program: programData) else {
+                return
+            }
+            print(encoded)
         }
     }
 }
