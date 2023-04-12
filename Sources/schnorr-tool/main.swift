@@ -80,19 +80,12 @@ extension SchnorrTool {
         @OptionGroup var options: HashOptions
         
         mutating func run() {
-            guard let _ = try? Data(base16Encoded: options.value) else {
+            guard let value = try? Data(base16Encoded: options.value) else {
                 fatalError("Wrong input.")
             }
-            var hasher1 = Crypto.SHA256()
-            hasher1.update(data: "TapTweak".data(using: .utf8)!)
-            let prefixedTagHash = hasher1.finalize().description
-            let tagHash = prefixedTagHash.dropFirst("SHA256 digest: ".count)
-            var hasher = Crypto.SHA256()
-            //print("tagHash: \(tagHash)")
-            hasher.update(data: try! Data(base16Encoded: tagHash + tagHash + options.value))
-            let digest = hasher.finalize()
-            let hash = digest.description.dropFirst("SHA256 digest: ".count)
-            print(hash)
+            let tagHash = Data(SHA256.hash(data: "TapTweak".data(using: .utf8)!))
+            let tweak = Data(SHA256.hash(data: tagHash + tagHash + value))
+            print(tweak.base16EncodedString())
         }
     }
     
